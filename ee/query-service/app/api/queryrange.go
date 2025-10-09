@@ -192,7 +192,7 @@ func (aH *APIHandler) handleAnomalyQuery(ctx context.Context, orgID valuer.UUID,
 }
 
 func (aH *APIHandler) queryRangeV5(rw http.ResponseWriter, req *http.Request) {
-	zap.L().Info("jidai queryRangeV5")
+	aH.Signoz.Instrumentation.Logger().Info("jidai queryRangeV5")
 
 	bodyBytes, err := io.ReadAll(req.Body)
 	if err != nil {
