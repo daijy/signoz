@@ -227,6 +227,7 @@ func NewReaderFromClickhouseConnection(
 }
 
 func (r *ClickHouseReader) GetInstantQueryMetricsResult(ctx context.Context, queryParams *model.InstantQueryMetricsParams) (*promql.Result, *stats.QueryStats, *model.ApiError) {
+	zap.L().Info(fmt.Sprintf("jidai start instant query: %s,%T", queryParams.Query, r.prometheus.Storage()))
 	qry, err := r.prometheus.Engine().NewInstantQuery(ctx, r.prometheus.Storage(), nil, queryParams.Query, queryParams.Time)
 	if err != nil {
 		return nil, nil, &model.ApiError{Typ: model.ErrorBadData, Err: err}
@@ -250,12 +251,12 @@ func (r *ClickHouseReader) GetInstantQueryMetricsResult(ctx context.Context, que
 }
 
 func (r *ClickHouseReader) GetQueryRangeResult(ctx context.Context, query *model.QueryRangeParams) (*promql.Result, *stats.QueryStats, *model.ApiError) {
+	zap.L().Info(fmt.Sprintf("jidai start range query: %s,%T", query.Query, r.prometheus.Storage()))
 	qry, err := r.prometheus.Engine().NewRangeQuery(ctx, r.prometheus.Storage(), nil, query.Query, query.Start, query.End, query.Step)
 
 	if err != nil {
 		return nil, nil, &model.ApiError{Typ: model.ErrorBadData, Err: err}
 	}
-	fmt.Printf("jidai start range query: %s,%T", query.Query, r.prometheus.Storage())
 
 	res := qry.Exec(ctx)
 
