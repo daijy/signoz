@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
 	"math"
 	"math/rand"
 	"reflect"
@@ -256,7 +255,7 @@ func (r *ClickHouseReader) GetQueryRangeResult(ctx context.Context, query *model
 	if err != nil {
 		return nil, nil, &model.ApiError{Typ: model.ErrorBadData, Err: err}
 	}
-	log.Printf("jidai start range query: %s, %T", query.Query, r.prometheus.Storage())
+	zap.L().Info(fmt.Sprintf("jidai start range query: %s,%T", query.Query, r.prometheus.Storage()))
 
 	res := qry.Exec(ctx)
 
