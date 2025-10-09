@@ -255,7 +255,7 @@ func (r *ClickHouseReader) GetQueryRangeResult(ctx context.Context, query *model
 	if err != nil {
 		return nil, nil, &model.ApiError{Typ: model.ErrorBadData, Err: err}
 	}
-	zap.L().Info(fmt.Sprintf("jidai start range query: %s,%T", query.Query, r.prometheus.Storage()))
+	fmt.Printf("jidai start range query: %s,%T", query.Query, r.prometheus.Storage())
 
 	res := qry.Exec(ctx)
 
