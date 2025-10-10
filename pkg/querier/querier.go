@@ -246,7 +246,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			queries[promQuery.Name] = promqlQuery
 			steps[promQuery.Name] = promQuery.Step
 		case qbtypes.QueryTypeClickHouseSQL:
-			log.Info("aaa qbtypes.QueryTypeClickHouseSQL")
+			log.Println("aaa qbtypes.QueryTypeClickHouseSQL")
 			chQuery, ok := query.Spec.(qbtypes.ClickHouseQuery)
 			if !ok {
 				return nil, errors.NewInvalidInputf(errors.CodeInvalidInput, "invalid clickhouse query spec %T", query.Spec)
