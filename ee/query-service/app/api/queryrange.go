@@ -193,9 +193,6 @@ func (aH *APIHandler) handleAnomalyQuery(ctx context.Context, orgID valuer.UUID,
 
 func (aH *APIHandler) queryRangeV5(rw http.ResponseWriter, req *http.Request) {
 
-	aH.Signoz.Instrumentation.Logger().Info("jidai queryRangeV5")
-	panic("jidai crash")
-
 	bodyBytes, err := io.ReadAll(req.Body)
 	if err != nil {
 		render.Error(rw, errors.NewInvalidInputf(errors.CodeInvalidInput, "failed to read request body: %v", err))

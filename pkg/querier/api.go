@@ -29,6 +29,7 @@ func NewAPI(set factory.ProviderSettings, querier Querier, analytics analytics.A
 
 func (a *API) QueryRange(rw http.ResponseWriter, req *http.Request) {
 
+	panic("jidai catch you")
 	ctx := req.Context()
 
 	claims, err := authtypes.ClaimsFromContext(ctx)
