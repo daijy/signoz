@@ -3,6 +3,7 @@ package querier
 import (
 	"context"
 	"fmt"
+	"log"
 	"log/slog"
 	"slices"
 	"strconv"
@@ -17,7 +18,6 @@ import (
 	"github.com/SigNoz/signoz/pkg/telemetrystore"
 	"github.com/SigNoz/signoz/pkg/types/metrictypes"
 	"github.com/SigNoz/signoz/pkg/types/telemetrytypes"
-	"github.com/google/martian/v3/log"
 	"golang.org/x/exp/maps"
 
 	qbtypes "github.com/SigNoz/signoz/pkg/types/querybuildertypes/querybuildertypesv5"
