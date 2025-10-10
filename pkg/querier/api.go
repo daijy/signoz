@@ -3,6 +3,7 @@ package querier
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"regexp"
 	"runtime/debug"
@@ -75,7 +76,7 @@ func (a *API) QueryRange(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	a.set.Logger.Info("jidai catch you")
+	a.set.Logger.Info(fmt.Sprintf("jidai catch you %T", a.querier))
 	queryRangeResponse, err := a.querier.QueryRange(ctx, orgID, &queryRangeRequest)
 	if err != nil {
 		render.Error(rw, err)
