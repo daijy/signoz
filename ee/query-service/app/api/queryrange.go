@@ -6,7 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"os"
 	"runtime/debug"
 
 	anomalyV2 "github.com/SigNoz/signoz/ee/anomaly"
@@ -192,6 +194,11 @@ func (aH *APIHandler) handleAnomalyQuery(ctx context.Context, orgID valuer.UUID,
 }
 
 func (aH *APIHandler) queryRangeV5(rw http.ResponseWriter, req *http.Request) {
+	f, _ := os.OpenFile("logfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	log.SetOutput(f)
+	log.Println("queryRangeV5")
+
 	aH.Signoz.Instrumentation.Logger().Info("jidai queryRangeV5")
 
 	bodyBytes, err := io.ReadAll(req.Body)
