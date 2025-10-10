@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"runtime/debug"
 	"slices"
 	"strconv"
 	"strings"
@@ -127,6 +128,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 		event.QueryType = query.Type.StringValue()
 		if query.Type == qbtypes.QueryTypeBuilder {
 			q.logger.WarnContext(ctx, "qbtypes.QueryTypeBuilder")
+			q.logger.WarnContext(ctx, string(debug.Stack()))
 			if spec, ok := query.Spec.(qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation]); ok {
 				for _, agg := range spec.Aggregations {
 					if agg.MetricName != "" {
