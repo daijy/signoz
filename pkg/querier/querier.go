@@ -17,6 +17,7 @@ import (
 	"github.com/SigNoz/signoz/pkg/telemetrystore"
 	"github.com/SigNoz/signoz/pkg/types/metrictypes"
 	"github.com/SigNoz/signoz/pkg/types/telemetrytypes"
+	"github.com/google/martian/v3/log"
 	"golang.org/x/exp/maps"
 
 	qbtypes "github.com/SigNoz/signoz/pkg/types/querybuildertypes/querybuildertypesv5"
@@ -245,7 +246,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			queries[promQuery.Name] = promqlQuery
 			steps[promQuery.Name] = promQuery.Step
 		case qbtypes.QueryTypeClickHouseSQL:
-			q.logger.WarnContext(ctx, "aaa qbtypes.QueryTypeClickHouseSQL")
+			log.Info("aaa qbtypes.QueryTypeClickHouseSQL")
 			chQuery, ok := query.Spec.(qbtypes.ClickHouseQuery)
 			if !ok {
 				return nil, errors.NewInvalidInputf(errors.CodeInvalidInput, "invalid clickhouse query spec %T", query.Spec)
