@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"runtime/debug"
 	"slices"
 	"strconv"
 	"strings"
@@ -128,7 +127,6 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 		event.QueryType = query.Type.StringValue()
 		if query.Type == qbtypes.QueryTypeBuilder {
 			q.logger.WarnContext(ctx, "qbtypes.QueryTypeBuilder")
-			q.logger.WarnContext(ctx, string(debug.Stack()))
 			if spec, ok := query.Spec.(qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation]); ok {
 				for _, agg := range spec.Aggregations {
 					if agg.MetricName != "" {
@@ -141,6 +139,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			// allowed, we override it.
 			switch spec := query.Spec.(type) {
 			case qbtypes.QueryBuilderQuery[qbtypes.TraceAggregation]:
+				q.logger.WarnContext(ctx, "qbtypes.TraceAggregation")
 				event.TracesUsed = true
 				event.FilterApplied = spec.Filter != nil && spec.Filter.Expression != ""
 				event.GroupByApplied = len(spec.GroupBy) > 0
@@ -156,6 +155,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 				}
 				req.CompositeQuery.Queries[idx].Spec = spec
 			case qbtypes.QueryBuilderQuery[qbtypes.LogAggregation]:
+				q.logger.WarnContext(ctx, "qbtypes.LogAggregation")
 				event.LogsUsed = true
 				event.FilterApplied = spec.Filter != nil && spec.Filter.Expression != ""
 				event.GroupByApplied = len(spec.GroupBy) > 0
@@ -171,6 +171,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 				}
 				req.CompositeQuery.Queries[idx].Spec = spec
 			case qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation]:
+				q.logger.WarnContext(ctx, "qbtypes.MetricAggregation")
 				event.MetricsUsed = true
 				event.FilterApplied = spec.Filter != nil && spec.Filter.Expression != ""
 				event.GroupByApplied = len(spec.GroupBy) > 0
@@ -235,6 +236,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 	for _, query := range req.CompositeQuery.Queries {
 		switch query.Type {
 		case qbtypes.QueryTypePromQL:
+			q.logger.WarnContext(ctx, "aaa qbtypes.QueryTypePromQL")
 			promQuery, ok := query.Spec.(qbtypes.PromQuery)
 			if !ok {
 				return nil, errors.NewInvalidInputf(errors.CodeInvalidInput, "invalid promql query spec %T", query.Spec)
@@ -243,6 +245,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			queries[promQuery.Name] = promqlQuery
 			steps[promQuery.Name] = promQuery.Step
 		case qbtypes.QueryTypeClickHouseSQL:
+			q.logger.WarnContext(ctx, "aaa qbtypes.QueryTypeClickHouseSQL")
 			chQuery, ok := query.Spec.(qbtypes.ClickHouseQuery)
 			if !ok {
 				return nil, errors.NewInvalidInputf(errors.CodeInvalidInput, "invalid clickhouse query spec %T", query.Spec)
@@ -252,18 +255,21 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 		case qbtypes.QueryTypeBuilder:
 			switch spec := query.Spec.(type) {
 			case qbtypes.QueryBuilderQuery[qbtypes.TraceAggregation]:
+				q.logger.WarnContext(ctx, "aaa qbtypes.TraceAggregation")
 				spec.ShiftBy = extractShiftFromBuilderQuery(spec)
 				timeRange := adjustTimeRangeForShift(spec, qbtypes.TimeRange{From: req.Start, To: req.End}, req.RequestType)
 				bq := newBuilderQuery(q.telemetryStore, q.traceStmtBuilder, spec, timeRange, req.RequestType, tmplVars)
 				queries[spec.Name] = bq
 				steps[spec.Name] = spec.StepInterval
 			case qbtypes.QueryBuilderQuery[qbtypes.LogAggregation]:
+				q.logger.WarnContext(ctx, "aaa qbtypes.LogAggregation")
 				spec.ShiftBy = extractShiftFromBuilderQuery(spec)
 				timeRange := adjustTimeRangeForShift(spec, qbtypes.TimeRange{From: req.Start, To: req.End}, req.RequestType)
 				bq := newBuilderQuery(q.telemetryStore, q.logStmtBuilder, spec, timeRange, req.RequestType, tmplVars)
 				queries[spec.Name] = bq
 				steps[spec.Name] = spec.StepInterval
 			case qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation]:
+				q.logger.WarnContext(ctx, "aaa qbtypes.MetricAggregation")
 				for i := range spec.Aggregations {
 					if spec.Aggregations[i].MetricName != "" && spec.Aggregations[i].Temporality == metrictypes.Unknown {
 						if temp, ok := metricTemporality[spec.Aggregations[i].MetricName]; ok && temp != metrictypes.Unknown {
