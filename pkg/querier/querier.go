@@ -126,6 +126,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 	for idx, query := range req.CompositeQuery.Queries {
 		event.QueryType = query.Type.StringValue()
 		if query.Type == qbtypes.QueryTypeBuilder {
+			q.logger.WarnContext(ctx, "qbtypes.QueryTypeBuilder")
 			if spec, ok := query.Spec.(qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation]); ok {
 				for _, agg := range spec.Aggregations {
 					if agg.MetricName != "" {
@@ -189,6 +190,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 				req.CompositeQuery.Queries[idx].Spec = spec
 			}
 		} else if query.Type == qbtypes.QueryTypePromQL {
+			q.logger.WarnContext(ctx, "qbtypes.QueryTypePromQL")
 			event.MetricsUsed = true
 			switch spec := query.Spec.(type) {
 			case qbtypes.PromQuery:
@@ -200,6 +202,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 				req.CompositeQuery.Queries[idx].Spec = spec
 			}
 		} else if query.Type == qbtypes.QueryTypeClickHouseSQL {
+			q.logger.WarnContext(ctx, "qbtypes.QueryTypeClickHouseSQL")
 			switch spec := query.Spec.(type) {
 			case qbtypes.ClickHouseQuery:
 				if strings.TrimSpace(spec.Query) != "" {
