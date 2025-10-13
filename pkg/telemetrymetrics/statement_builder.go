@@ -3,6 +3,7 @@ package telemetrymetrics
 import (
 	"context"
 	"fmt"
+	"log"
 	"log/slog"
 
 	"github.com/SigNoz/signoz/pkg/factory"
@@ -84,6 +85,10 @@ func (b *MetricQueryStatementBuilder) Build(
 	variables map[string]qbtypes.VariableItem,
 ) (*qbtypes.Statement, error) {
 	keySelectors := GetKeySelectors(query)
+	for _, key := range keySelectors {
+		log.Printf("jidai keySelectors %v", key)
+	}
+
 	keys, _, err := b.metadataStore.GetKeysMulti(ctx, keySelectors)
 	if err != nil {
 		return nil, err

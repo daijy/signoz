@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -194,11 +193,6 @@ func (q *builderQuery[T]) Execute(ctx context.Context) (*qbtypes.Result, error) 
 	}
 
 	// Execute the query with proper context for partial value detection
-	log.Printf("jidai %d - %d", q.fromMS, q.toMS)
-	for _, arg := range stmt.Args {
-		log.Printf("jidai arg %v", arg)
-	}
-	log.Printf("jidai stmt.Query %s", stmt.Query)
 	result, err := q.executeWithContext(ctx, stmt.Query, stmt.Args)
 	if err != nil {
 		return nil, err
