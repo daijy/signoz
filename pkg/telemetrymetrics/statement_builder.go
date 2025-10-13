@@ -58,7 +58,7 @@ func GetKeySelectors(query qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation])
 		groupBy := query.GroupBy[idx]
 		selectors := querybuilder.QueryStringToKeysSelectors(groupBy.TelemetryFieldKey.Name)
 		for _, selector := range selectors {
-			log.Printf("jidai whereClauseSelectors %v", selector)
+			log.Printf("jidai groupSelectors %v", selector)
 		}
 		keySelectors = append(keySelectors, selectors...)
 	}
