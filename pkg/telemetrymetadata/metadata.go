@@ -593,10 +593,10 @@ func getPriorityForContext(ctx telemetrytypes.FieldContext) int {
 
 // getMetricsKeys returns the keys from the metrics that match the field selection criteria
 func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelectors []*telemetrytypes.FieldKeySelector) ([]*telemetrytypes.TelemetryFieldKey, bool, error) {
+	log.Printf("jidai getMetricsKeys %d", len(fieldKeySelectors))
 	if len(fieldKeySelectors) == 0 {
 		return nil, true, nil
 	}
-	log.Println("jidai here")
 
 	sb := sqlbuilder.
 		Select("attr_name as name", "attr_type as field_context", "attr_datatype as field_data_type", `
@@ -696,7 +696,6 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 
 // getMeterKeys returns the keys from the meter metrics that match the field selection criteria
 func (t *telemetryMetaStore) getMeterSourceMetricKeys(ctx context.Context, fieldKeySelectors []*telemetrytypes.FieldKeySelector) ([]*telemetrytypes.TelemetryFieldKey, bool, error) {
-	log.Printf("jidai getMeterSourceMetricKeys %d", len(fieldKeySelectors))
 	if len(fieldKeySelectors) == 0 {
 		return nil, true, nil
 	}
