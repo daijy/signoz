@@ -160,9 +160,6 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 	origTimeAgg := query.Aggregations[0].TimeAggregation
 	origGroupBy := slices.Clone(query.GroupBy)
 
-	log.Printf("jidai SpaceAggregation %v", query.Aggregations[0].SpaceAggregation)
-	log.Printf("jidai TimeAggregation %v", query.Aggregations[0].TimeAggregation)
-
 	if query.Aggregations[0].SpaceAggregation.IsPercentile() &&
 		query.Aggregations[0].Type != metrictypes.ExpHistogramType {
 		// add le in the group by if doesn't exist
@@ -222,7 +219,6 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 			cteArgs = append(cteArgs, args)
 		}
 	} else {
-		log.Println("here2")
 		// temporal_aggregation_cte
 		if frag, args, err := b.buildTemporalAggregationCTE(ctx, start, end, query, keys, timeSeriesCTE, timeSeriesCTEArgs); err != nil {
 			return nil, err
@@ -309,6 +305,7 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 	var err error
 
 	if query.Filter != nil && query.Filter.Expression != "" {
+		log.Println("here3")
 		preparedWhereClause, err = querybuilder.PrepareWhereClause(query.Filter.Expression, querybuilder.FilterExprVisitorOpts{
 			Logger:           b.logger,
 			FieldMapper:      b.fm,
@@ -317,11 +314,13 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 			FullTextColumn:   &telemetrytypes.TelemetryFieldKey{Name: "labels"},
 			Variables:        variables,
 		})
+		log.Printf("preparedWhereClause %v", preparedWhereClause.WhereClause)
 		if err != nil {
 			return "", nil, err
 		}
 	}
 
+	log.Println("here4")
 	start, end, tbl := WhichTSTableToUse(start, end, query.Aggregations[0].TableHints)
 	sb.From(fmt.Sprintf("%s.%s", DBName, tbl))
 
