@@ -3,6 +3,7 @@ package telemetrymetadata
 import (
 	"context"
 	"fmt"
+	"log"
 	"log/slog"
 	"slices"
 	"strings"
@@ -595,6 +596,7 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 	if len(fieldKeySelectors) == 0 {
 		return nil, true, nil
 	}
+	log.Println("jidai here")
 
 	sb := sqlbuilder.
 		Select("attr_name as name", "attr_type as field_context", "attr_datatype as field_data_type", `
