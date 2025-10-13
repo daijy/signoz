@@ -305,7 +305,7 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 	var err error
 
 	if query.Filter != nil && query.Filter.Expression != "" {
-		log.Println("here3")
+		log.Printf("here3 %s", query.Filter.Expression)
 		preparedWhereClause, err = querybuilder.PrepareWhereClause(query.Filter.Expression, querybuilder.FilterExprVisitorOpts{
 			Logger:           b.logger,
 			FieldMapper:      b.fm,
@@ -320,7 +320,6 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 		}
 	}
 
-	log.Println("here4")
 	start, end, tbl := WhichTSTableToUse(start, end, query.Aggregations[0].TableHints)
 	sb.From(fmt.Sprintf("%s.%s", DBName, tbl))
 
