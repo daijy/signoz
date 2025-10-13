@@ -166,7 +166,6 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 	if query.Aggregations[0].SpaceAggregation.IsPercentile() &&
 		query.Aggregations[0].Type != metrictypes.ExpHistogramType {
 		// add le in the group by if doesn't exist
-		log.Println("jidai here1")
 		leExists := false
 		for _, g := range query.GroupBy {
 			if g.TelemetryFieldKey.Name == "le" {
@@ -192,17 +191,11 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 			query.GroupBy = append(query.GroupBy, qbtypes.GroupByKey{
 				TelemetryFieldKey: telemetrytypes.TelemetryFieldKey{Name: "le"},
 			})
-			for _, grouBy := range query.GroupBy {
-				log.Printf("jidai here2, %v", grouBy)
-			}
 		}
 
 		// make the time aggregation rate and space aggregation sum
 		query.Aggregations[0].TimeAggregation = metrictypes.TimeAggregationRate
 		query.Aggregations[0].SpaceAggregation = metrictypes.SpaceAggregationSum
-
-		log.Printf("jidai modified SpaceAggregation %v", query.Aggregations[0].SpaceAggregation)
-		log.Printf("jidai modified TimeAggregation %v", query.Aggregations[0].TimeAggregation)
 
 	}
 
@@ -215,15 +208,21 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 	if timeSeriesCTE, timeSeriesCTEArgs, err = b.buildTimeSeriesCTE(ctx, start, end, query, keys, variables); err != nil {
 		return nil, err
 	}
+	log.Printf("timeSeriesCTE %s", timeSeriesCTE)
+	for _, arg := range timeSeriesCTEArgs {
+		log.Printf("arg %v", arg)
+	}
 
 	if b.CanShortCircuitDelta(query) {
 		// spatial_aggregation_cte directly for certain delta queries
+		log.Println("here1")
 		frag, args := b.buildTemporalAggDeltaFastPath(start, end, query, timeSeriesCTE, timeSeriesCTEArgs)
 		if frag != "" {
 			cteFragments = append(cteFragments, frag)
 			cteArgs = append(cteArgs, args)
 		}
 	} else {
+		log.Println("here2")
 		// temporal_aggregation_cte
 		if frag, args, err := b.buildTemporalAggregationCTE(ctx, start, end, query, keys, timeSeriesCTE, timeSeriesCTEArgs); err != nil {
 			return nil, err
