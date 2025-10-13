@@ -87,10 +87,6 @@ func (b *MetricQueryStatementBuilder) Build(
 	keySelectors := GetKeySelectors(query)
 
 	keys, _, err := b.metadataStore.GetKeysMulti(ctx, keySelectors)
-	log.Printf("jidai keys %d", len(keys))
-	for _, key := range keys {
-		log.Printf("jidai key %v", key)
-	}
 	if err != nil {
 		return nil, err
 	}
@@ -164,9 +160,13 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 	origTimeAgg := query.Aggregations[0].TimeAggregation
 	origGroupBy := slices.Clone(query.GroupBy)
 
+	log.Printf("jidai SpaceAggregation %v", query.Aggregations[0].SpaceAggregation)
+	log.Printf("jidai TimeAggregation %v", query.Aggregations[0].TimeAggregation)
+
 	if query.Aggregations[0].SpaceAggregation.IsPercentile() &&
 		query.Aggregations[0].Type != metrictypes.ExpHistogramType {
 		// add le in the group by if doesn't exist
+		log.Println("jidai here1")
 		leExists := false
 		for _, g := range query.GroupBy {
 			if g.TelemetryFieldKey.Name == "le" {
@@ -192,11 +192,18 @@ func (b *MetricQueryStatementBuilder) buildPipelineStatement(
 			query.GroupBy = append(query.GroupBy, qbtypes.GroupByKey{
 				TelemetryFieldKey: telemetrytypes.TelemetryFieldKey{Name: "le"},
 			})
+			for _, grouBy := range query.GroupBy {
+				log.Printf("jidai here2, %v", grouBy)
+			}
 		}
 
 		// make the time aggregation rate and space aggregation sum
 		query.Aggregations[0].TimeAggregation = metrictypes.TimeAggregationRate
 		query.Aggregations[0].SpaceAggregation = metrictypes.SpaceAggregationSum
+
+		log.Printf("jidai modified SpaceAggregation %v", query.Aggregations[0].SpaceAggregation)
+		log.Printf("jidai modified TimeAggregation %v", query.Aggregations[0].TimeAggregation)
+
 	}
 
 	var timeSeriesCTE string
