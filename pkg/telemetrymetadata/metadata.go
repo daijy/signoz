@@ -696,6 +696,7 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 
 // getMeterKeys returns the keys from the meter metrics that match the field selection criteria
 func (t *telemetryMetaStore) getMeterSourceMetricKeys(ctx context.Context, fieldKeySelectors []*telemetrytypes.FieldKeySelector) ([]*telemetrytypes.TelemetryFieldKey, bool, error) {
+	log.Printf("jidai getMeterSourceMetricKeys %d", len(fieldKeySelectors))
 	if len(fieldKeySelectors) == 0 {
 		return nil, true, nil
 	}
