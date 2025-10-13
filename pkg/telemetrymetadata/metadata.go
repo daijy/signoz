@@ -593,7 +593,6 @@ func getPriorityForContext(ctx telemetrytypes.FieldContext) int {
 
 // getMetricsKeys returns the keys from the metrics that match the field selection criteria
 func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelectors []*telemetrytypes.FieldKeySelector) ([]*telemetrytypes.TelemetryFieldKey, bool, error) {
-	log.Printf("jidai getMetricsKeys %d", len(fieldKeySelectors))
 	if len(fieldKeySelectors) == 0 {
 		return nil, true, nil
 	}
@@ -653,6 +652,7 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 
 	query, args := mainSb.BuildWithFlavor(sqlbuilder.ClickHouse)
 
+	log.Printf("jidai getMetricsKeys %s", query)
 	rows, err := t.telemetrystore.ClickhouseDB().Query(ctx, query, args...)
 	if err != nil {
 		return nil, false, errors.Wrapf(err, errors.TypeInternal, errors.CodeInternal, ErrFailedToGetMetricsKeys.Error())
