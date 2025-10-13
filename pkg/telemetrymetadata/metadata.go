@@ -860,6 +860,7 @@ func (t *telemetryMetaStore) GetKeysMulti(ctx context.Context, fieldKeySelectors
 		return nil, false, err
 	}
 
+	log.Println("jidai ready getMeterSourceMetricKeys")
 	meterSourceMetricsKeys, _, err := t.getMeterSourceMetricKeys(ctx, meterSourceMetricsSelectors)
 	if err != nil {
 		return nil, false, err
