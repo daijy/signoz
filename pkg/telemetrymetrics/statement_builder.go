@@ -320,11 +320,13 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 	}
 
 	start, end, tbl := WhichTSTableToUse(start, end, query.Aggregations[0].TableHints)
+	log.Printf("here6 %s", tbl)
 	sb.From(fmt.Sprintf("%s.%s", DBName, tbl))
 
 	sb.Select("fingerprint")
 	for _, g := range query.GroupBy {
 		col, err := b.fm.ColumnExpressionFor(ctx, &g.TelemetryFieldKey, keys)
+		log.Printf("here7 %s", col)
 		if err != nil {
 			return "", nil, err
 		}

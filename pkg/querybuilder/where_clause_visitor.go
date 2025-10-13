@@ -152,7 +152,7 @@ func PrepareWhereClause(query string, opts FilterExprVisitorOpts) (*PreparedWher
 		cond = "true"
 	}
 
-	log.Printf("here5 %s", cond)
+	log.Printf("here5 %s, %v", cond, visitor.builder.Args)
 	whereClause := sqlbuilder.NewWhereClause().AddWhereExpr(visitor.builder.Args, cond)
 
 	return &PreparedWhereClause{whereClause, visitor.warnings, visitor.mainWarnURL}, nil
