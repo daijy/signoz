@@ -3,6 +3,7 @@ package querybuilder
 import (
 	"context"
 	"fmt"
+	"log"
 	"log/slog"
 	"strconv"
 	"strings"
@@ -151,6 +152,7 @@ func PrepareWhereClause(query string, opts FilterExprVisitorOpts) (*PreparedWher
 		cond = "true"
 	}
 
+	log.Printf("here5 %s", cond)
 	whereClause := sqlbuilder.NewWhereClause().AddWhereExpr(visitor.builder.Args, cond)
 
 	return &PreparedWhereClause{whereClause, visitor.warnings, visitor.mainWarnURL}, nil

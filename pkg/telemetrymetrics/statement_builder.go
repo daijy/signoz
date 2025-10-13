@@ -314,7 +314,6 @@ func (b *MetricQueryStatementBuilder) buildTimeSeriesCTE(
 			FullTextColumn:   &telemetrytypes.TelemetryFieldKey{Name: "labels"},
 			Variables:        variables,
 		})
-		log.Printf("preparedWhereClause %v", preparedWhereClause.WhereClause)
 		if err != nil {
 			return "", nil, err
 		}
