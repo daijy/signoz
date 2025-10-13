@@ -84,6 +84,7 @@ func (b *MetricQueryStatementBuilder) Build(
 	query qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation],
 	variables map[string]qbtypes.VariableItem,
 ) (*qbtypes.Statement, error) {
+	log.Println("jidai Build")
 	keySelectors := GetKeySelectors(query)
 	for _, key := range keySelectors {
 		log.Printf("jidai keySelectors %v", key)
