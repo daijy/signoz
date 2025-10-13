@@ -679,6 +679,7 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 		if err != nil {
 			return nil, false, errors.Wrapf(err, errors.TypeInternal, errors.CodeInternal, ErrFailedToGetMetricsKeys.Error())
 		}
+		log.Printf("jidai name %s:%v", name, fieldDataType)
 		keys = append(keys, &telemetrytypes.TelemetryFieldKey{
 			Name:          name,
 			Signal:        telemetrytypes.SignalMetrics,
@@ -686,6 +687,7 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 			FieldDataType: fieldDataType,
 		})
 	}
+	log.Printf("jidai rowCount %d", rowCount)
 
 	if rows.Err() != nil {
 		return nil, false, errors.Wrapf(rows.Err(), errors.TypeInternal, errors.CodeInternal, ErrFailedToGetMetricsKeys.Error())
