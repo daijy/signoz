@@ -48,12 +48,18 @@ func GetKeySelectors(query qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation])
 	var keySelectors []*telemetrytypes.FieldKeySelector
 	if query.Filter != nil && query.Filter.Expression != "" {
 		whereClauseSelectors := querybuilder.QueryStringToKeysSelectors(query.Filter.Expression)
+		for _, whereSelector := range whereClauseSelectors {
+			log.Printf("jidai whereClauseSelectors %v", whereSelector)
+		}
 		keySelectors = append(keySelectors, whereClauseSelectors...)
 	}
 
 	for idx := range query.GroupBy {
 		groupBy := query.GroupBy[idx]
 		selectors := querybuilder.QueryStringToKeysSelectors(groupBy.TelemetryFieldKey.Name)
+		for _, selector := range selectors {
+			log.Printf("jidai whereClauseSelectors %v", selector)
+		}
 		keySelectors = append(keySelectors, selectors...)
 	}
 
@@ -84,11 +90,7 @@ func (b *MetricQueryStatementBuilder) Build(
 	query qbtypes.QueryBuilderQuery[qbtypes.MetricAggregation],
 	variables map[string]qbtypes.VariableItem,
 ) (*qbtypes.Statement, error) {
-	log.Println("jidai Build")
 	keySelectors := GetKeySelectors(query)
-	for _, key := range keySelectors {
-		log.Printf("jidai keySelectors %v", key)
-	}
 
 	keys, _, err := b.metadataStore.GetKeysMulti(ctx, keySelectors)
 	if err != nil {
