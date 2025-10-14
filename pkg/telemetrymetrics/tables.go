@@ -1,6 +1,7 @@
 package telemetrymetrics
 
 import (
+	"log"
 	"time"
 
 	"github.com/SigNoz/signoz/pkg/types/metrictypes"
@@ -67,6 +68,7 @@ func WhichTSTableToUse(
 		}
 	}
 
+	log.Println("Here 7")
 	// If time range is less than 6 hours, we need to use the `time_series_v4` table
 	// else if time range is less than 1 day and greater than 6 hours, we need to use the `time_series_v4_6hrs` table
 	// else if time range is less than 1 week and greater than 1 day, we need to use the `time_series_v4_1day` table
