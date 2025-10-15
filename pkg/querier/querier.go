@@ -112,6 +112,7 @@ func adjustTimeRangeForShift[T any](spec qbtypes.QueryBuilderQuery[T], tr qbtype
 
 func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtypes.QueryRangeRequest) (*qbtypes.QueryRangeResponse, error) {
 
+	log.Println("jidai QueryRange")
 	tmplVars := req.Variables
 	if tmplVars == nil {
 		tmplVars = make(map[string]qbtypes.VariableItem)
@@ -370,7 +371,6 @@ func (q *querier) run(
 			stats.BytesScanned += result.Stats.BytesScanned
 			stats.DurationMS += result.Stats.DurationMS
 		} else {
-			log.Println("with cache")
 			result, err := q.executeWithCache(ctx, orgID, query, steps[name], req.NoCache)
 			qbEvent.HasData = qbEvent.HasData || hasData(result)
 			if err != nil {
@@ -430,7 +430,6 @@ func (q *querier) executeWithCache(ctx context.Context, orgID valuer.UUID, query
 
 	// If no missing ranges, return cached result
 	if len(missingRanges) == 0 && cachedResult != nil {
-		log.Println("no missing range")
 		return cachedResult, nil
 	}
 
