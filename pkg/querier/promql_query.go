@@ -107,8 +107,8 @@ func (q *promqlQuery) Execute(ctx context.Context) (*qbv5.Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Println("jidai1 %T", q.promEngine.Storage())
-	log.Println("jidai1 %s", query)
+	log.Printf("jidai1 %T", q.promEngine.Storage())
+	log.Printf("jidai1 %s", query)
 
 	qry, err := q.promEngine.Engine().NewRangeQuery(
 		ctx,
