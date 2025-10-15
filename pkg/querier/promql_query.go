@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"log/slog"
 	"sort"
 	"strings"
@@ -106,6 +107,8 @@ func (q *promqlQuery) Execute(ctx context.Context) (*qbv5.Result, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Println("jidai1 %T", q.promEngine.Storage())
+	log.Println("jidai1 %s", query)
 
 	qry, err := q.promEngine.Engine().NewRangeQuery(
 		ctx,

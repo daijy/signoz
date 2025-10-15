@@ -112,7 +112,6 @@ func adjustTimeRangeForShift[T any](spec qbtypes.QueryBuilderQuery[T], tr qbtype
 
 func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtypes.QueryRangeRequest) (*qbtypes.QueryRangeResponse, error) {
 
-	log.Println("jidai QueryRange")
 	tmplVars := req.Variables
 	if tmplVars == nil {
 		tmplVars = make(map[string]qbtypes.VariableItem)
