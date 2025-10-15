@@ -300,5 +300,5 @@ require (
 )
 
 replace (
-        github.com/prometheus/prometheus => github.com/daijy/prometheus v0.0.0-20251015204525-0b7b45ba4e9f
+        github.com/prometheus/prometheus => github.com/daijy/prometheus v0.0.0-20251015205618-cf828799c4dc
 ) 
