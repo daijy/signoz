@@ -298,3 +298,7 @@ require (
 	k8s.io/utils v0.0.0-20250321185631-1f6e0b77f77e // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
+
+replace (
+        github.com/prometheus/prometheus => github.com/daijy/prometheus v0.0.0-20251015204525-0b7b45ba4e9f
+) 
