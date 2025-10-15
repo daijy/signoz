@@ -370,6 +370,7 @@ func (q *querier) run(
 			stats.BytesScanned += result.Stats.BytesScanned
 			stats.DurationMS += result.Stats.DurationMS
 		} else {
+			log.Println("with cache")
 			result, err := q.executeWithCache(ctx, orgID, query, steps[name], req.NoCache)
 			qbEvent.HasData = qbEvent.HasData || hasData(result)
 			if err != nil {
@@ -429,6 +430,7 @@ func (q *querier) executeWithCache(ctx context.Context, orgID valuer.UUID, query
 
 	// If no missing ranges, return cached result
 	if len(missingRanges) == 0 && cachedResult != nil {
+		log.Println("no missing range")
 		return cachedResult, nil
 	}
 
