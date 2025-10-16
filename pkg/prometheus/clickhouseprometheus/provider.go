@@ -2,7 +2,6 @@ package clickhouseprometheus
 
 import (
 	"context"
-	"log"
 
 	"github.com/SigNoz/signoz/pkg/factory"
 	"github.com/SigNoz/signoz/pkg/prometheus"
@@ -33,7 +32,6 @@ func NewFactory(telemetryStore telemetrystore.TelemetryStore) factory.ProviderFa
 func New(ctx context.Context, providerSettings factory.ProviderSettings, config prometheus.Config, telemetryStore telemetrystore.TelemetryStore) (prometheus.Prometheus, error) {
 	settings := factory.NewScopedProviderSettings(providerSettings, "github.com/SigNoz/signoz/pkg/prometheus/clickhouseprometheus")
 
-	log.Println("jidai here10")
 	readClient := NewReadClient(settings, telemetryStore)
 
 	return &provider{

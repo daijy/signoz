@@ -3,10 +3,12 @@ package clickhouseprometheus
 import (
 	"context"
 	"fmt"
-	"github.com/SigNoz/signoz/pkg/query-service/constants"
+	"log"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/SigNoz/signoz/pkg/query-service/constants"
 
 	"github.com/SigNoz/signoz/pkg/factory"
 	"github.com/SigNoz/signoz/pkg/telemetrystore"
@@ -29,6 +31,7 @@ func NewReadClient(settings factory.ScopedProviderSettings, telemetryStore telem
 }
 
 func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries bool) (storage.SeriesSet, error) {
+	log.Println("jidai here11")
 	if len(query.Matchers) == 2 {
 		var hasJob bool
 		var queryString string
