@@ -240,8 +240,10 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			q.logger.WarnContext(ctx, "aaa qbtypes.QueryTypePromQL")
 			promQuery, ok := query.Spec.(qbtypes.PromQuery)
 			if !ok {
+				q.logger.WarnContext(ctx, "not ok")
 				return nil, errors.NewInvalidInputf(errors.CodeInvalidInput, "invalid promql query spec %T", query.Spec)
 			}
+			q.logger.WarnContext(ctx, "ok")
 			promqlQuery := newPromqlQuery(q.logger, q.promEngine, promQuery, qbtypes.TimeRange{From: req.Start, To: req.End}, req.RequestType, tmplVars)
 			queries[promQuery.Name] = promqlQuery
 			steps[promQuery.Name] = promQuery.Step
@@ -299,6 +301,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 			}
 		}
 	}
+	q.logger.WarnContext(ctx, "begin running")
 	qbResp, qbErr := q.run(ctx, orgID, queries, req, steps, event)
 	if qbResp != nil {
 		qbResp.QBEvent = event
