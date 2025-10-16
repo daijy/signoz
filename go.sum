@@ -209,6 +209,8 @@ github.com/daijy/prometheus v0.0.0-20251016175321-afaed8178f0a h1:iDJriOr+R6nH1i
 github.com/daijy/prometheus v0.0.0-20251016175321-afaed8178f0a/go.mod h1:ioGx2SGKTY+fLnJSQCdTHqARVldGNS8OlIe3kvp98so=
 github.com/daijy/prometheus v0.0.0-20251016180422-7a39ee8c9da4 h1:XstFkaNr/7V7+KJBSP/pM8abIIlRO2nznAK4KFHGjwE=
 github.com/daijy/prometheus v0.0.0-20251016180422-7a39ee8c9da4/go.mod h1:ioGx2SGKTY+fLnJSQCdTHqARVldGNS8OlIe3kvp98so=
+github.com/daijy/prometheus v0.0.0-20251016182534-b97de56fe7f6 h1:SLCuwfml3WbmKYVFyG1pOOtcziKgInK2LARYI9uMZtg=
+github.com/daijy/prometheus v0.0.0-20251016182534-b97de56fe7f6/go.mod h1:ioGx2SGKTY+fLnJSQCdTHqARVldGNS8OlIe3kvp98so=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
