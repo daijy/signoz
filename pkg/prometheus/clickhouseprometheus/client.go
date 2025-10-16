@@ -8,9 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/SigNoz/signoz/pkg/query-service/constants"
-
 	"github.com/SigNoz/signoz/pkg/factory"
+	"github.com/SigNoz/signoz/pkg/query-service/constants"
 	"github.com/SigNoz/signoz/pkg/telemetrystore"
 	promValue "github.com/prometheus/prometheus/model/value"
 	"github.com/prometheus/prometheus/prompb"
@@ -31,11 +30,12 @@ func NewReadClient(settings factory.ScopedProviderSettings, telemetryStore telem
 }
 
 func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries bool) (storage.SeriesSet, error) {
-	log.Println("jidai here11")
 	if len(query.Matchers) == 2 {
+		log.Println("jidai1")
 		var hasJob bool
 		var queryString string
 		for _, m := range query.Matchers {
+			log.Println("jidai2")
 			if m.Type == prompb.LabelMatcher_EQ && m.Name == "job" && m.Value == "rawsql" {
 				hasJob = true
 			}
@@ -50,6 +50,7 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 				return nil, err
 			}
 
+			log.Println("jidai3")
 			return remote.FromQueryResult(sortSeries, res), nil
 		}
 	}
@@ -66,6 +67,7 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 		return nil, err
 	}
 
+	log.Printf("jidai4 %v", clickhouseQuery)
 	fingerprints, err := client.getFingerprintsFromClickhouseQuery(ctx, clickhouseQuery, args)
 	if err != nil {
 		return nil, err
