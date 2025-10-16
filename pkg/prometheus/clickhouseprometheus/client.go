@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"runtime/debug"
 	"strconv"
 	"strings"
 
@@ -30,12 +31,11 @@ func NewReadClient(settings factory.ScopedProviderSettings, telemetryStore telem
 }
 
 func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries bool) (storage.SeriesSet, error) {
+	debug.PrintStack()
 	if len(query.Matchers) == 2 {
-		log.Println("jidai1")
 		var hasJob bool
 		var queryString string
 		for _, m := range query.Matchers {
-			log.Println("jidai2")
 			if m.Type == prompb.LabelMatcher_EQ && m.Name == "job" && m.Value == "rawsql" {
 				hasJob = true
 			}
@@ -68,6 +68,9 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 	}
 
 	log.Printf("jidai4 %v", clickhouseQuery)
+	for _, arg := range args {
+		log.Printf("jidai4 arg %v", arg)
+	}
 	fingerprints, err := client.getFingerprintsFromClickhouseQuery(ctx, clickhouseQuery, args)
 	if err != nil {
 		return nil, err
