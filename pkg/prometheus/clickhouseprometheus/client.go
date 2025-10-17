@@ -77,8 +77,8 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 		return remote.FromQueryResult(sortSeries, new(prompb.QueryResult)), nil
 	}
 
-	log.Printf("jidai555 %s", clickhouseQuery)
 	clickhouseSubQuery, args, err := client.queryToClickhouseQuery(ctx, query, metricName, true)
+	log.Printf("jidai555 %s", clickhouseSubQuery)
 	if err != nil {
 		return nil, err
 	}
