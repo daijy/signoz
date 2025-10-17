@@ -78,7 +78,6 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 	}
 
 	clickhouseSubQuery, args, err := client.queryToClickhouseQuery(ctx, query, metricName, true)
-	log.Printf("jidai555 %s", clickhouseSubQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -186,6 +185,10 @@ func (client *client) querySamples(ctx context.Context, start int64, end int64, 
 	allArgs := append([]any{metricName}, args...)
 	allArgs = append(allArgs, start, end)
 
+	log.Printf("jidai666 %s", query)
+	for _, arg := range allArgs {
+		log.Printf("jidai666 %v", arg)
+	}
 	rows, err := client.telemetryStore.ClickhouseDB().Query(ctx, query, allArgs...)
 	if err != nil {
 		return nil, err
