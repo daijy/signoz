@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"runtime/debug"
 	"strconv"
 	"strings"
 
@@ -31,7 +30,6 @@ func NewReadClient(settings factory.ScopedProviderSettings, telemetryStore telem
 }
 
 func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries bool) (storage.SeriesSet, error) {
-	debug.PrintStack()
 	if len(query.Matchers) == 2 {
 		var hasJob bool
 		var queryString string
@@ -79,6 +77,7 @@ func (client *client) Read(ctx context.Context, query *prompb.Query, sortSeries 
 		return remote.FromQueryResult(sortSeries, new(prompb.QueryResult)), nil
 	}
 
+	log.Printf("jidai555 %s", clickhouseQuery)
 	clickhouseSubQuery, args, err := client.queryToClickhouseQuery(ctx, query, metricName, true)
 	if err != nil {
 		return nil, err
