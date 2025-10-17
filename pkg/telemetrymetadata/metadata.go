@@ -652,6 +652,10 @@ func (t *telemetryMetaStore) getMetricsKeys(ctx context.Context, fieldKeySelecto
 
 	query, args := mainSb.BuildWithFlavor(sqlbuilder.ClickHouse)
 
+	log.Printf("getMetrics %s", query)
+	for _, arg := range args {
+		log.Printf("getMetrics arg %v", arg)
+	}
 	rows, err := t.telemetrystore.ClickhouseDB().Query(ctx, query, args...)
 	if err != nil {
 		return nil, false, errors.Wrapf(err, errors.TypeInternal, errors.CodeInternal, ErrFailedToGetMetricsKeys.Error())
