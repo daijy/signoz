@@ -223,7 +223,7 @@ func (q *querier) QueryRange(ctx context.Context, orgID valuer.UUID, req *qbtype
 	if len(metricNames) > 0 {
 		var err error
 		metricTemporality, err = q.metadataStore.FetchTemporalityMulti(ctx, metricNames...)
-		log.Printf("metricTemporality %v", metricTemporality)
+		log.Printf("jidai metricTemporality %v", metricTemporality)
 		if err != nil {
 			q.logger.WarnContext(ctx, "failed to fetch metric temporality", "error", err, "metrics", metricNames)
 			// Continue without temporality - statement builder will handle unspecified

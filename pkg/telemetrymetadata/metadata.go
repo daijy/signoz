@@ -1425,6 +1425,7 @@ func (t *telemetryMetaStore) FetchTemporalityMulti(ctx context.Context, metricNa
 
 	result := make(map[string]metrictypes.Temporality)
 	metricsTemporality, err := t.fetchMetricsTemporality(ctx, metricNames...)
+	log.Printf("jidai FetchTemporalityMulti %v", metricsTemporality)
 	if err != nil {
 		return nil, err
 	}
