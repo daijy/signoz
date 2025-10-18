@@ -1454,7 +1454,6 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 	// We use attr_string_value where attr_name = '__temporality__'
 	// Note: The columns are mixed in the current data - temporality column contains metric_name
 	// and metric_name column contains temporality value, so we use the correct mapping
-	log.Printf("jidai fetchMetricsTemporality %s.%s", t.metricsDBName, t.metricsFieldsTblName)
 	sb := sqlbuilder.Select(
 		"metric_name",
 		"argMax(temporality, last_reported_unix_milli) as temporality",
@@ -1467,6 +1466,10 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 	sb.GroupBy("metric_name")
 
 	query, args := sb.BuildWithFlavor(sqlbuilder.ClickHouse)
+	log.Printf("jidai fetchMetricsTemporality %s", query)
+	for _, arg := range args {
+		log.Printf("jidai arg %v", arg)
+	}
 
 	t.logger.DebugContext(ctx, "fetching metric temporality", "query", query, "args", args)
 
@@ -1500,7 +1503,6 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 		result[metricName] = temporality
 	}
 
-	log.Printf("jidai fetchMetricsTemporality %d", len(result))
 	return result, nil
 }
 
