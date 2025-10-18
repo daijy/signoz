@@ -424,6 +424,19 @@ func (q *querier) run(
 
 // executeWithCache executes a query using the bucket cache
 func (q *querier) executeWithCache(ctx context.Context, orgID valuer.UUID, query qbtypes.Query, step qbtypes.Step, noCache bool) (*qbtypes.Result, error) {
+	// Step can be empty if caller did not record it. Try to recover it from the
+	// underlying builder query spec so cache alignment continues to work.
+	if step.Duration == 0 {
+		switch bq := query.(type) {
+		case *builderQuery[qbtypes.TraceAggregation]:
+			step = bq.spec.StepInterval
+		case *builderQuery[qbtypes.LogAggregation]:
+			step = bq.spec.StepInterval
+		case *builderQuery[qbtypes.MetricAggregation]:
+			step = bq.spec.StepInterval
+		}
+	}
+
 	// Get cached data and missing ranges
 	cachedResult, missingRanges := q.bucketCache.GetMissRanges(ctx, orgID, query, step)
 
