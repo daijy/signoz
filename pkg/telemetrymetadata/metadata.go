@@ -1425,7 +1425,6 @@ func (t *telemetryMetaStore) FetchTemporalityMulti(ctx context.Context, metricNa
 
 	result := make(map[string]metrictypes.Temporality)
 	metricsTemporality, err := t.fetchMetricsTemporality(ctx, metricNames...)
-	log.Printf("jidai FetchTemporalityMulti %v", metricsTemporality)
 	if err != nil {
 		return nil, err
 	}
@@ -1455,6 +1454,7 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 	// We use attr_string_value where attr_name = '__temporality__'
 	// Note: The columns are mixed in the current data - temporality column contains metric_name
 	// and metric_name column contains temporality value, so we use the correct mapping
+	log.Printf("jidai fetchMetricsTemporality %s.%s", t.metricsDBName, t.metricsFieldsTblName)
 	sb := sqlbuilder.Select(
 		"metric_name",
 		"argMax(temporality, last_reported_unix_milli) as temporality",
@@ -1500,6 +1500,7 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 		result[metricName] = temporality
 	}
 
+	log.Printf("jidai fetchMetricsTemporality %d", len(result))
 	return result, nil
 }
 
