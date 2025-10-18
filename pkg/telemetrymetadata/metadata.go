@@ -1551,5 +1551,6 @@ func (t *telemetryMetaStore) fetchMeterSourceMetricsTemporality(ctx context.Cont
 		result[metricName] = temporality
 	}
 
+	log.Printf("fetchMeterSourceMetricsTemporality result: %d", len(result))
 	return result, nil
 }
