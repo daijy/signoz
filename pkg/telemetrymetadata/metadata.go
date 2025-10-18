@@ -1505,7 +1505,7 @@ func (t *telemetryMetaStore) fetchMetricsTemporality(ctx context.Context, metric
 func (t *telemetryMetaStore) fetchMeterSourceMetricsTemporality(ctx context.Context, metricNames ...string) (map[string]metrictypes.Temporality, error) {
 	result := make(map[string]metrictypes.Temporality)
 
-	log.Printf("fetchMeterSourceMetricsTemporality: %s", t.meterDBName)
+	log.Printf("fetchMeterSourceMetricsTemporality: %s.%s", t.meterDBName, t.meterFieldsTblName)
 	sb := sqlbuilder.Select(
 		"metric_name",
 		"argMax(temporality, unix_milli) as temporality",
