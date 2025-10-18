@@ -183,6 +183,7 @@ func (q *builderQuery[T]) isWindowList() bool {
 
 func (q *builderQuery[T]) Execute(ctx context.Context) (*qbtypes.Result, error) {
 
+	log.Printf("jidai Execute %v", q.spec.Aggregations[0])
 	// can we do window based pagination?
 	if q.kind == qbtypes.RequestTypeRaw && q.isWindowList() {
 		return q.executeWindowList(ctx)
